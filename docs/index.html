@@ -40,12 +40,13 @@
     <div id="chartForFunctionCallWith20Arguments" class="chart"></div>
     <div id="chartForFunctionCallWithoutArguments" class="chart"></div>
     <script>
+        const options = { renderer: 'svg' };
+        const getChart = (id) => echarts.init(document.getElementById(id), null, options);
         const grid = { left: '3%', right: '100px', bottom: '3%', containLabel: true };
         const label = { normal: { show: true, position: 'top' } };
         const xAxis = { type: 'category', data: ['v2.1.2', 'v2.2.0'], name: 'Version' };
-        const chartForFunctionCallbackWith20Arguments = echarts.init(
-            document.getElementById('chartForFunctionCallbackWith20Arguments'), null, { renderer: 'svg' });
-        chartForFunctionCallbackWith20Arguments.setOption({
+        let chart = getChart('chartForFunctionCallbackWith20Arguments');
+        chart.setOption({
             title: { text: 'Function callback with 20 arguments' },
             grid: grid,
             xAxis: xAxis,
@@ -56,9 +57,8 @@
                 label: label,
             }]
         });
-        const chartForFunctionCallbackWithoutArguments = echarts.init(
-            document.getElementById('chartForFunctionCallbackWithoutArguments'), null, { renderer: 'svg' });
-        chartForFunctionCallbackWithoutArguments.setOption({
+        chart = getChart('chartForFunctionCallbackWithoutArguments');
+        chart.setOption({
             title: { text: 'Function callback without arguments' },
             grid: grid,
             xAxis: xAxis,
@@ -69,9 +69,8 @@
                 label: label,
             }]
         });
-        const chartForFunctionCallWith20Arguments = echarts.init(
-            document.getElementById('chartForFunctionCallWith20Arguments'), null, { renderer: 'svg' });
-        chartForFunctionCallWith20Arguments.setOption({
+        chart = getChart('chartForFunctionCallWith20Arguments');
+        chart.setOption({
             title: { text: 'Function call with 20 arguments' },
             grid: grid,
             xAxis: xAxis,
@@ -82,9 +81,8 @@
                 label: label,
             }]
         });
-        const chartForFunctionCallWithoutArguments = echarts.init(
-            document.getElementById('chartForFunctionCallWithoutArguments'), null, { renderer: 'svg' });
-        chartForFunctionCallWithoutArguments.setOption({
+        chart = getChart('chartForFunctionCallWithoutArguments');
+        chart.setOption({
             title: { text: 'Function call without arguments' },
             grid: grid,
             xAxis: xAxis,

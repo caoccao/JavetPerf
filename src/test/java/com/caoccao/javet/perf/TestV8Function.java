@@ -38,17 +38,18 @@ public class TestV8Function extends BaseTestJavet {
                     "const a = function() { return arguments.length; }; a;")) {
                 Arrays.fill(arguments, runtime.createV8ValueInteger(1));
                 int count = 0;
-                final long startTime = System.currentTimeMillis();
+                stopWatch.reset();
+                stopWatch.start();
                 for (long i = 0; i < loopCount; i++) {
                     V8ValueInteger v8ValueInteger = v8ValueFunction.call(null, arguments);
                     count += v8ValueInteger.getValue();
                 }
-                final long stopTime = System.currentTimeMillis();
+                stopWatch.stop();
                 assertEquals(argumentCount * loopCount, count, "Count should match.");
-                final long tps = loopCount * 1000L / (stopTime - startTime);
+                final long tps = loopCount * 1000L / stopWatch.getTime();
                 logger.info(
                         "[{}] TestV8Function.testCallWith20Arguments(): {} calls in {}ms. TPS is {}.",
-                        StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), count, stopTime - startTime, tps);
+                        StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), count, stopWatch.getTime(), tps);
             } catch (Throwable t) {
                 fail(t);
             }
@@ -62,17 +63,18 @@ public class TestV8Function extends BaseTestJavet {
             try (V8ValueFunction v8ValueFunction = runtime.createV8ValueFunction(
                     "const a = function() { return 1; }; a;")) {
                 int count = 0;
-                final long startTime = System.currentTimeMillis();
+                stopWatch.reset();
+                stopWatch.start();
                 for (long i = 0; i < loopCount; i++) {
                     V8ValueInteger v8ValueInteger = v8ValueFunction.call(null);
                     count += v8ValueInteger.getValue();
                 }
-                final long stopTime = System.currentTimeMillis();
+                stopWatch.stop();
                 assertEquals(loopCount, count, "Count should match.");
-                final long tps = loopCount * 1000L / (stopTime - startTime);
+                final long tps = loopCount * 1000L / stopWatch.getTime();
                 logger.info(
                         "[{}] TestV8Function.testCallWithoutArguments(): {} calls in {}ms. TPS is {}.",
-                        StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), count, stopTime - startTime, tps);
+                        StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), count, stopWatch.getTime(), tps);
             } catch (Throwable t) {
                 fail(t);
             }

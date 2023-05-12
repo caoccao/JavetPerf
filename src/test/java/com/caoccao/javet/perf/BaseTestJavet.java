@@ -22,6 +22,7 @@ import com.caoccao.javet.interop.loader.JavetLibLoader;
 import com.caoccao.javet.interop.options.NodeRuntimeOptions;
 import com.caoccao.javet.interop.options.V8Flags;
 import com.caoccao.javet.interop.options.V8RuntimeOptions;
+import org.apache.commons.lang3.time.StopWatch;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.slf4j.Logger;
@@ -36,6 +37,7 @@ public abstract class BaseTestJavet {
     protected Logger logger;
     protected V8Runtime nodeRuntime;
     protected List<V8Runtime> runtimes;
+    protected StopWatch stopWatch;
     protected V8Runtime v8Runtime;
 
     public BaseTestJavet() {
@@ -80,5 +82,6 @@ public abstract class BaseTestJavet {
         nodeRuntime = V8Host.getNodeInstance().createV8Runtime();
         v8Runtime = V8Host.getV8Instance().createV8Runtime();
         runtimes = List.of(v8Runtime, nodeRuntime);
+        stopWatch = new StopWatch();
     }
 }
