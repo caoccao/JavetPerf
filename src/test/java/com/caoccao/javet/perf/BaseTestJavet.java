@@ -32,6 +32,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class BaseTestJavet {
+    protected static boolean javetVersionLogged = false;
     protected Logger logger;
     protected V8Runtime nodeRuntime;
     protected List<V8Runtime> runtimes;
@@ -54,6 +55,8 @@ public abstract class BaseTestJavet {
 
     @AfterEach
     protected void afterEach() throws Exception {
+        nodeRuntime.lowMemoryNotification();
+        v8Runtime.lowMemoryNotification();
         assertEquals(0, nodeRuntime.getCallbackContextCount(),
                 "Callback context count should be 0 after test case is ended.");
         assertEquals(0, nodeRuntime.getReferenceCount(),
@@ -70,7 +73,10 @@ public abstract class BaseTestJavet {
 
     @BeforeEach
     protected void beforeEach() throws Exception {
-        logger.info("Javet version is {}.", JavetLibLoader.LIB_VERSION);
+        if (!javetVersionLogged) {
+            logger.info("Javet version is {}.", JavetLibLoader.LIB_VERSION);
+            javetVersionLogged = true;
+        }
         nodeRuntime = V8Host.getNodeInstance().createV8Runtime();
         v8Runtime = V8Host.getV8Instance().createV8Runtime();
         runtimes = List.of(v8Runtime, nodeRuntime);

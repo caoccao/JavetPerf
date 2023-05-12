@@ -21,6 +21,7 @@ import com.caoccao.javet.interfaces.IJavetAnonymous;
 import com.caoccao.javet.values.V8Value;
 import com.caoccao.javet.values.primitive.V8ValueInteger;
 import com.caoccao.javet.values.reference.V8ValueObject;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -54,12 +55,10 @@ public class TestV8FunctionCallback extends BaseTestJavet {
                 assertEquals(argumentCount * loopCount, count, "Count should match.");
                 final long tps = count * 1000L / (stopTime - startTime);
                 logger.info(
-                        "[{}]: {} calls in {}ms. TPS is {}.",
-                        runtime.getJSRuntimeType().getName(), count, stopTime - startTime, tps);
+                        "[{}] testReceiveCallback(): {} calls in {}ms. TPS is {}.",
+                        StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), count, stopTime - startTime, tps);
             } catch (Throwable t) {
                 fail(t);
-            } finally {
-                runtime.lowMemoryNotification();
             }
         });
     }
