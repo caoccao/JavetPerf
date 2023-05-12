@@ -20,7 +20,6 @@ object Config {
     object Projects {
         // https://mvnrepository.com/artifact/org.apache.commons/commons-collections4
         const val COMMONS_COLLECTIONS_4 = "org.apache.commons:commons-collections4:${Versions.COMMONS_COLLECTIONS_4}"
-
         // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
         const val COMMONS_LANG_3 = "org.apache.commons:commons-lang3:${Versions.COMMONS_LANG_3}"
         const val JAVET = "com.caoccao.javet:javet:${Versions.JAVET}"
@@ -53,8 +52,7 @@ repositories {
 
 dependencies {
     implementation(Config.Projects.COMMONS_LANG_3)
-    // https://mvnrepository.com/artifact/org.apache.commons/commons-collections4
-    implementation("org.apache.commons:commons-collections4:4.4")
+    implementation(Config.Projects.COMMONS_COLLECTIONS_4)
     if (OperatingSystem.current().isMacOsX()) {
         implementation(Config.Projects.JAVET_MACOS)
     } else {

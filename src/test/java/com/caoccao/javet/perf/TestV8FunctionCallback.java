@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestV8FunctionCallback extends BaseTestJavet {
     @Test
-    public void testReceiveCallback() {
+    public void testReceiveCallbackWith20Arguments() {
         IJavetAnonymous anonymous = new IJavetAnonymous() {
             @V8Function
             public int test(V8Value... v8Values) {
@@ -53,9 +53,39 @@ public class TestV8FunctionCallback extends BaseTestJavet {
                 }
                 final long stopTime = System.currentTimeMillis();
                 assertEquals(argumentCount * loopCount, count, "Count should match.");
-                final long tps = count * 1000L / (stopTime - startTime);
+                final long tps = loopCount * 1000L / (stopTime - startTime);
                 logger.info(
-                        "[{}] testReceiveCallback(): {} calls in {}ms. TPS is {}.",
+                        "[{}] TestV8FunctionCallback.testReceiveCallbackWith20Arguments(): {} calls in {}ms. TPS is {}.",
+                        StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), count, stopTime - startTime, tps);
+            } catch (Throwable t) {
+                fail(t);
+            }
+        });
+    }
+
+    @Test
+    public void testReceiveCallbackWithoutArguments() {
+        IJavetAnonymous anonymous = new IJavetAnonymous() {
+            @V8Function
+            public int test(V8Value... v8Values) {
+                return 1;
+            }
+        };
+        final long loopCount = 500_000L;
+        runtimes.forEach(runtime -> {
+            try (V8ValueObject v8ValueObject = runtime.createV8ValueObject()) {
+                v8ValueObject.bind(anonymous);
+                int count = 0;
+                final long startTime = System.currentTimeMillis();
+                for (long i = 0; i < loopCount; i++) {
+                    V8ValueInteger v8ValueInteger = v8ValueObject.invoke("test");
+                    count += v8ValueInteger.getValue();
+                }
+                final long stopTime = System.currentTimeMillis();
+                assertEquals(loopCount, count, "Count should match.");
+                final long tps = loopCount * 1000L / (stopTime - startTime);
+                logger.info(
+                        "[{}] TestV8FunctionCallback.testReceiveCallbackWithoutArguments(): {} calls in {}ms. TPS is {}.",
                         StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), count, stopTime - startTime, tps);
             } catch (Throwable t) {
                 fail(t);

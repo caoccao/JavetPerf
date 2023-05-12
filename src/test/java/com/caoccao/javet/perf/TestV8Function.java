@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestV8Function extends BaseTestJavet {
     @Test
-    public void testCall() {
+    public void testCallWith20Arguments() {
         final int argumentCount = 20;
         final long loopCount = 400_000L;
         V8Value[] arguments = new V8Value[argumentCount];
@@ -45,9 +45,33 @@ public class TestV8Function extends BaseTestJavet {
                 }
                 final long stopTime = System.currentTimeMillis();
                 assertEquals(argumentCount * loopCount, count, "Count should match.");
-                final long tps = count * 1000L / (stopTime - startTime);
+                final long tps = loopCount * 1000L / (stopTime - startTime);
                 logger.info(
-                        "[{}] testCall(): {} calls in {}ms. TPS is {}.",
+                        "[{}] TestV8Function.testCallWith20Arguments(): {} calls in {}ms. TPS is {}.",
+                        StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), count, stopTime - startTime, tps);
+            } catch (Throwable t) {
+                fail(t);
+            }
+        });
+    }
+
+    @Test
+    public void testCallWithoutArguments() {
+        final long loopCount = 1_000_000L;
+        runtimes.forEach(runtime -> {
+            try (V8ValueFunction v8ValueFunction = runtime.createV8ValueFunction(
+                    "const a = function() { return 1; }; a;")) {
+                int count = 0;
+                final long startTime = System.currentTimeMillis();
+                for (long i = 0; i < loopCount; i++) {
+                    V8ValueInteger v8ValueInteger = v8ValueFunction.call(null);
+                    count += v8ValueInteger.getValue();
+                }
+                final long stopTime = System.currentTimeMillis();
+                assertEquals(loopCount, count, "Count should match.");
+                final long tps = loopCount * 1000L / (stopTime - startTime);
+                logger.info(
+                        "[{}] TestV8Function.testCallWithoutArguments(): {} calls in {}ms. TPS is {}.",
                         StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), count, stopTime - startTime, tps);
             } catch (Throwable t) {
                 fail(t);

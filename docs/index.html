@@ -33,35 +33,64 @@
     <h2>Function Callback Performance</h2>
     <ul>
         <li>There is a major performance improvement in v2.2.0.</li>
-        <li>The argument count in the function callback is 20.</li>
     </ul>
-    <div id="chartFunctionCallback" class="chart"></div>
+    <div id="chartForFunctionCallbackWith20Arguments" class="chart"></div>
+    <div id="chartForFunctionCallbackWithoutArguments" class="chart"></div>
     <h2>Function Call Performance</h2>
-    <div id="chartFunctionCall" class="chart"></div>
+    <div id="chartForFunctionCallWith20Arguments" class="chart"></div>
+    <div id="chartForFunctionCallWithoutArguments" class="chart"></div>
     <script>
         const grid = { left: '3%', right: '100px', bottom: '3%', containLabel: true };
         const label = { normal: { show: true, position: 'top' } };
         const xAxis = { type: 'category', data: ['v2.1.2', 'v2.2.0'], name: 'Version' };
-        const chartForFunctionCallback = echarts.init(document.getElementById('chartFunctionCallback'), null, { renderer: 'svg' });
-        chartForFunctionCallback.setOption({
-            title: { show: false },
+        const chartForFunctionCallbackWith20Arguments = echarts.init(
+            document.getElementById('chartForFunctionCallbackWith20Arguments'), null, { renderer: 'svg' });
+        chartForFunctionCallbackWith20Arguments.setOption({
+            title: { text: 'Function callback with 20 arguments' },
             grid: grid,
             xAxis: xAxis,
             yAxis: { type: 'value', name: 'Calls per second' },
             series: [{
-                data: [760000, 1700000],
+                data: [40000, 89000],
                 type: 'bar',
                 label: label,
             }]
         });
-        const chartForFunctionCall = echarts.init(document.getElementById('chartFunctionCall'), null, { renderer: 'svg' });
-        chartForFunctionCall.setOption({
-            title: { show: false },
+        const chartForFunctionCallbackWithoutArguments = echarts.init(
+            document.getElementById('chartForFunctionCallbackWithoutArguments'), null, { renderer: 'svg' });
+        chartForFunctionCallbackWithoutArguments.setOption({
+            title: { text: 'Function callback without arguments' },
             grid: grid,
             xAxis: xAxis,
             yAxis: { type: 'value', name: 'Calls per second' },
             series: [{
-                data: [4700000, 4700000],
+                data: [350000, 89000],
+                type: 'bar',
+                label: label,
+            }]
+        });
+        const chartForFunctionCallWith20Arguments = echarts.init(
+            document.getElementById('chartForFunctionCallWith20Arguments'), null, { renderer: 'svg' });
+        chartForFunctionCallWith20Arguments.setOption({
+            title: { text: 'Function call with 20 arguments' },
+            grid: grid,
+            xAxis: xAxis,
+            yAxis: { type: 'value', name: 'Calls per second' },
+            series: [{
+                data: [238000, 238000],
+                type: 'bar',
+                label: label,
+            }]
+        });
+        const chartForFunctionCallWithoutArguments = echarts.init(
+            document.getElementById('chartForFunctionCallWithoutArguments'), null, { renderer: 'svg' });
+        chartForFunctionCallWithoutArguments.setOption({
+            title: { text: 'Function call without arguments' },
+            grid: grid,
+            xAxis: xAxis,
+            yAxis: { type: 'value', name: 'Calls per second' },
+            series: [{
+                data: [970000, 1020000],
                 type: 'bar',
                 label: label,
             }]
