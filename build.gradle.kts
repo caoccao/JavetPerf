@@ -56,7 +56,7 @@ dependencies {
     if (OperatingSystem.current().isMacOsX()) {
         implementation(Config.Projects.JAVET_MACOS)
     } else {
-        implementation(files("c:/home/coding/public/Javet/build/libs/javet-2.2.0.jar"))
+        implementation(Config.Projects.JAVET)
     }
     implementation(Config.Projects.SELF4J_API)
     implementation(Config.Projects.SELF4J_LOG4J_12)
