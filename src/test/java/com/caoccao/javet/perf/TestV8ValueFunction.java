@@ -27,7 +27,7 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class TestV8Function extends BaseTestJavet {
+public class TestV8ValueFunction extends BaseTestJavet {
     @Test
     public void testCallWith20Arguments() {
         final int argumentCount = 20;
@@ -49,7 +49,7 @@ public class TestV8Function extends BaseTestJavet {
                 final long tps = loopCount * 1000L / stopWatch.getTime();
                 logger.info(
                         "[{}] TestV8Function.testCallWith20Arguments(): {} calls in {}ms. TPS is {}.",
-                        StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), count, stopWatch.getTime(), tps);
+                        StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), loopCount, stopWatch.getTime(), tps);
             } catch (Throwable t) {
                 fail(t);
             }
@@ -74,7 +74,7 @@ public class TestV8Function extends BaseTestJavet {
                 final long tps = loopCount * 1000L / stopWatch.getTime();
                 logger.info(
                         "[{}] TestV8Function.testCallWithoutArguments(): {} calls in {}ms. TPS is {}.",
-                        StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), count, stopWatch.getTime(), tps);
+                        StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), loopCount, stopWatch.getTime(), tps);
             } catch (Throwable t) {
                 fail(t);
             }

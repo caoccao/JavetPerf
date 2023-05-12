@@ -12,6 +12,15 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+        table {
+            border-collapse: collapse;
+            border: solid 1px gray;
+        }
+
+        td {
+            padding: 5px;
+        }
+
         .chart {
             width: 800px;
             height: 400px;
@@ -26,28 +35,39 @@
         <![endif]-->
     <h1>Javet Performance Report</h1>
     <h2>Test Environment</h2>
-    <ul>
-        <li>CPU: 10700K.</li>
-        <li>OS: Windows 10.</li>
-    </ul>
-    <h2>Function Callback Performance</h2>
+    <table border="1">
+        <tbody>
+            <tr>
+                <td>CPU</td>
+                <td>10700K.</td>
+            </tr>
+            <tr>
+                <td>OS</td>
+                <td>Windows 10.</td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>V8FunctionCallback.receiveCallback() Performance</h2>
     <ul>
         <li>There is a major performance improvement in v2.2.0.</li>
     </ul>
-    <div id="chartForFunctionCallbackWith20Arguments" class="chart"></div>
-    <div id="chartForFunctionCallbackWithoutArguments" class="chart"></div>
-    <h2>Function Call Performance</h2>
-    <div id="chartForFunctionCallWith20Arguments" class="chart"></div>
-    <div id="chartForFunctionCallWithoutArguments" class="chart"></div>
+    <div id="V8FunctionCallbackReceiveCallbackWith20Arguments" class="chart"></div>
+    <div id="V8FunctionCallbackReceiveCallbackWithoutArguments" class="chart"></div>
+    <h2>V8ValueArray.forEach() Performance</h2>
+    <div id="V8ValueArrayForEachUniConsumer" class="chart"></div>
+    <div id="V8ValueArrayForEachUniIndexedConsumer" class="chart"></div>
+    <h2>V8ValueFunction.call() Performance</h2>
+    <div id="V8ValueFunctionCallWith20Arguments" class="chart"></div>
+    <div id="V8ValueFunctionCallWithoutArguments" class="chart"></div>
     <script>
         const options = { renderer: 'svg' };
         const getChart = (id) => echarts.init(document.getElementById(id), null, options);
         const grid = { left: '3%', right: '100px', bottom: '3%', containLabel: true };
         const label = { normal: { show: true, position: 'top' } };
         const xAxis = { type: 'category', data: ['v2.1.2', 'v2.2.0'], name: 'Version' };
-        let chart = getChart('chartForFunctionCallbackWith20Arguments');
+        let chart = getChart('V8FunctionCallbackReceiveCallbackWith20Arguments');
         chart.setOption({
-            title: { text: 'Function callback with 20 arguments' },
+            title: { text: 'V8FunctionCallback.receiveCallback() with 20 arguments' },
             grid: grid,
             xAxis: xAxis,
             yAxis: { type: 'value', name: 'Calls per second' },
@@ -57,9 +77,9 @@
                 label: label,
             }]
         });
-        chart = getChart('chartForFunctionCallbackWithoutArguments');
+        chart = getChart('V8FunctionCallbackReceiveCallbackWithoutArguments');
         chart.setOption({
-            title: { text: 'Function callback without arguments' },
+            title: { text: 'V8FunctionCallback.receiveCallback() without arguments' },
             grid: grid,
             xAxis: xAxis,
             yAxis: { type: 'value', name: 'Calls per second' },
@@ -69,9 +89,33 @@
                 label: label,
             }]
         });
-        chart = getChart('chartForFunctionCallWith20Arguments');
+        chart = getChart('V8ValueArrayForEachUniConsumer');
         chart.setOption({
-            title: { text: 'Function call with 20 arguments' },
+            title: { text: 'V8ValueArray.forEach(UniConsumer)' },
+            grid: grid,
+            xAxis: xAxis,
+            yAxis: { type: 'value', name: 'Calls per second' },
+            series: [{
+                data: [850, 3800],
+                type: 'bar',
+                label: label,
+            }]
+        });
+        chart = getChart('V8ValueArrayForEachUniIndexedConsumer');
+        chart.setOption({
+            title: { text: 'V8ValueArray.forEach(UniIndexedConsumer)' },
+            grid: grid,
+            xAxis: xAxis,
+            yAxis: { type: 'value', name: 'Calls per second' },
+            series: [{
+                data: [850, 3800],
+                type: 'bar',
+                label: label,
+            }]
+        });
+        chart = getChart('V8ValueFunctionCallWith20Arguments');
+        chart.setOption({
+            title: { text: 'V8ValueFunction.call() with 20 arguments' },
             grid: grid,
             xAxis: xAxis,
             yAxis: { type: 'value', name: 'Calls per second' },
@@ -81,9 +125,9 @@
                 label: label,
             }]
         });
-        chart = getChart('chartForFunctionCallWithoutArguments');
+        chart = getChart('V8ValueFunctionCallWithoutArguments');
         chart.setOption({
-            title: { text: 'Function call without arguments' },
+            title: { text: 'V8ValueFunction.call() without arguments' },
             grid: grid,
             xAxis: xAxis,
             yAxis: { type: 'value', name: 'Calls per second' },

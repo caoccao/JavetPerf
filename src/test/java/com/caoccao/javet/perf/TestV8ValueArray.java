@@ -16,47 +16,37 @@
 
 package com.caoccao.javet.perf;
 
-import com.caoccao.javet.annotations.V8Function;
-import com.caoccao.javet.interfaces.IJavetAnonymous;
+import com.caoccao.javet.interfaces.IJavetUniIndexedConsumer;
 import com.caoccao.javet.values.V8Value;
 import com.caoccao.javet.values.primitive.V8ValueInteger;
-import com.caoccao.javet.values.reference.V8ValueObject;
+import com.caoccao.javet.values.reference.V8ValueArray;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+import java.util.concurrent.atomic.LongAdder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class TestV8FunctionCallback extends BaseTestJavet {
+public class TestV8ValueArray extends BaseTestJavet {
     @Test
-    public void testReceiveCallbackWith20Arguments() {
-        IJavetAnonymous anonymous = new IJavetAnonymous() {
-            @V8Function
-            public int test(V8Value... v8Values) {
-                return v8Values.length;
-            }
-        };
-        final int argumentCount = 20;
-        final long loopCount = 200_000L;
-        V8Value[] arguments = new V8Value[argumentCount];
+    public void testForEachWithUniConsumer() {
+        final int arrayLength = 1000;
+        final long loopCount = 1000L;
         runtimes.forEach(runtime -> {
-            try (V8ValueObject v8ValueObject = runtime.createV8ValueObject()) {
-                Arrays.fill(arguments, runtime.createV8ValueInteger(1));
-                v8ValueObject.bind(anonymous);
-                int count = 0;
+            try (V8ValueArray v8ValueArray = runtime.getExecutor(
+                    "Array.from({ length: " + arrayLength + " }, (_, i) => i)").execute()) {
+                LongAdder longAdder = new LongAdder();
                 stopWatch.reset();
                 stopWatch.start();
                 for (long i = 0; i < loopCount; i++) {
-                    V8ValueInteger v8ValueInteger = v8ValueObject.invoke("test", arguments);
-                    count += v8ValueInteger.getValue();
+                    v8ValueArray.forEach(v8Value -> longAdder.add(((V8ValueInteger) v8Value).getValue()));
                 }
                 stopWatch.stop();
-                assertEquals(argumentCount * loopCount, count, "Count should match.");
+                assertEquals(arrayLength * (arrayLength - 1) / 2L * loopCount, longAdder.longValue(), "Count should match.");
                 final long tps = loopCount * 1000L / stopWatch.getTime();
                 logger.info(
-                        "[{}] TestV8FunctionCallback.testReceiveCallbackWith20Arguments(): {} calls in {}ms. TPS is {}.",
+                        "[{}] TestV8ValueArray.testForEachWithUniConsumer(): {} calls in {}ms. TPS is {}.",
                         StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), loopCount, stopWatch.getTime(), tps);
             } catch (Throwable t) {
                 fail(t);
@@ -65,29 +55,25 @@ public class TestV8FunctionCallback extends BaseTestJavet {
     }
 
     @Test
-    public void testReceiveCallbackWithoutArguments() {
-        IJavetAnonymous anonymous = new IJavetAnonymous() {
-            @V8Function
-            public int test(V8Value... v8Values) {
-                return 1;
-            }
-        };
-        final long loopCount = 500_000L;
+    public void testForEachWithUniIndexedConsumer() {
+        final int arrayLength = 1000;
+        final long loopCount = 1000L;
         runtimes.forEach(runtime -> {
-            try (V8ValueObject v8ValueObject = runtime.createV8ValueObject()) {
-                v8ValueObject.bind(anonymous);
-                int count = 0;
+            try (V8ValueArray v8ValueArray = runtime.getExecutor(
+                    "Array.from({ length: " + arrayLength + " }, (_, i) => i)").execute()) {
+                LongAdder longAdder = new LongAdder();
                 stopWatch.reset();
                 stopWatch.start();
                 for (long i = 0; i < loopCount; i++) {
-                    V8ValueInteger v8ValueInteger = v8ValueObject.invoke("test");
-                    count += v8ValueInteger.getValue();
+                    v8ValueArray.forEach(
+                            (IJavetUniIndexedConsumer<V8Value, Throwable>) (index, value) ->
+                                    longAdder.add(((V8ValueInteger) value).getValue()));
                 }
                 stopWatch.stop();
-                assertEquals(loopCount, count, "Count should match.");
+                assertEquals(arrayLength * (arrayLength - 1) / 2L * loopCount, longAdder.longValue(), "Count should match.");
                 final long tps = loopCount * 1000L / stopWatch.getTime();
                 logger.info(
-                        "[{}] TestV8FunctionCallback.testReceiveCallbackWithoutArguments(): {} calls in {}ms. TPS is {}.",
+                        "[{}] TestV8ValueArray.testForEachWithUniConsumer(): {} calls in {}ms. TPS is {}.",
                         StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), loopCount, stopWatch.getTime(), tps);
             } catch (Throwable t) {
                 fail(t);
