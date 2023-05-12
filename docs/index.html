@@ -14,7 +14,7 @@
     <style>
         .chart {
             width: 800px;
-            height: 600px;
+            height: 400px;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
@@ -24,43 +24,47 @@
     <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-    <div id="chartCallback" class="chart"></div>
+    <h1>Javet Performance Report</h1>
+    <h2>Test Environment</h2>
+    <ul>
+        <li>CPU: 10700K.</li>
+        <li>OS: Windows 10.</li>
+    </ul>
+    <h2>Function Callback Performance</h2>
+    <ul>
+        <li>There is a major performance improvement in v2.2.0.</li>
+        <li>The argument count in the function callback is 20.</li>
+    </ul>
+    <div id="chartFunctionCallback" class="chart"></div>
+    <h2>Function Call Performance</h2>
+    <div id="chartFunctionCall" class="chart"></div>
     <script>
-        const chartForCallback = echarts.init(document.getElementById('chartCallback'), null, { renderer: 'svg' });
-        chartForCallback.setOption({
-            title: {
-                text: 'Function Callback Performance'
-            },
-            legend: {
-                orient: 'vertical'
-            },
-            grid: {
-                left: '3%',
-                right: '100px',
-                bottom: '3%',
-                containLabel: true
-            },
-            xAxis: {
-                type: 'category',
-                data: ['v2.1.2', 'v2.2.0'],
-                name: 'Version',
-            },
-            yAxis: {
-                type: 'value',
-                name: 'Call per second',
-            },
-            series: [
-                {
-                    data: [760000, 1700000],
-                    type: 'bar',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'top'
-                        }
-                    },
-                }
-            ]
+        const grid = { left: '3%', right: '100px', bottom: '3%', containLabel: true };
+        const label = { normal: { show: true, position: 'top' } };
+        const xAxis = { type: 'category', data: ['v2.1.2', 'v2.2.0'], name: 'Version' };
+        const chartForFunctionCallback = echarts.init(document.getElementById('chartFunctionCallback'), null, { renderer: 'svg' });
+        chartForFunctionCallback.setOption({
+            title: { show: false },
+            grid: grid,
+            xAxis: xAxis,
+            yAxis: { type: 'value', name: 'Calls per second' },
+            series: [{
+                data: [760000, 1700000],
+                type: 'bar',
+                label: label,
+            }]
+        });
+        const chartForFunctionCall = echarts.init(document.getElementById('chartFunctionCall'), null, { renderer: 'svg' });
+        chartForFunctionCall.setOption({
+            title: { show: false },
+            grid: grid,
+            xAxis: xAxis,
+            yAxis: { type: 'value', name: 'Calls per second' },
+            series: [{
+                data: [4700000, 4700000],
+                type: 'bar',
+                label: label,
+            }]
         });
     </script>
 </body>
