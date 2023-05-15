@@ -46,7 +46,7 @@ public class TestV8ValueArray extends BaseTestJavet {
                 assertEquals(arrayLength * (arrayLength - 1) / 2L * loopCount, longAdder.longValue(), "Count should match.");
                 final long tps = loopCount * 1000L / stopWatch.getTime();
                 logger.info(
-                        "[{}] TestV8ValueArray.testForEachWithUniConsumer(): {} calls in {}ms. TPS is {}.",
+                        "[{}] V8ValueArrayForEachWithUniConsumer: {} calls in {}ms. TPS is {}.",
                         StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), loopCount, stopWatch.getTime(), tps);
             } catch (Throwable t) {
                 fail(t);
@@ -73,7 +73,7 @@ public class TestV8ValueArray extends BaseTestJavet {
                 assertEquals(arrayLength * (arrayLength - 1) / 2L * loopCount, longAdder.longValue(), "Count should match.");
                 final long tps = loopCount * 1000L / stopWatch.getTime();
                 logger.info(
-                        "[{}] TestV8ValueArray.testForEachWithUniConsumer(): {} calls in {}ms. TPS is {}.",
+                        "[{}] V8ValueArrayForEachWithUniIndexedConsumer: {} calls in {}ms. TPS is {}.",
                         StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), loopCount, stopWatch.getTime(), tps);
             } catch (Throwable t) {
                 fail(t);

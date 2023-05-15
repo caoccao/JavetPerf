@@ -12,10 +12,16 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        table, tr, td {
+        table,
+        tr,
+        td {
             border-collapse: collapse;
             border: solid 1px gray;
             padding: 5px;
+        }
+
+        code {
+            color: blueviolet;
         }
 
         .chart {
@@ -31,6 +37,12 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
     <h1>Javet Performance Report</h1>
+    <p>This repository is for tracking the performance improvement among some key releases.</p>
+    <p style="font-weight: bold;">Major changes in v2.2.0 are:</p>
+    <ul>
+        <li><code>forEach()</code> in <code>Array</code>, <code>Object</code> is rewritten.</li>
+        <li><code>receiveCallback()</code> is refactored.</li>
+    </ul>
     <h2>Test Environment</h2>
     <table>
         <tbody>
@@ -42,26 +54,49 @@
                 <td>OS</td>
                 <td>Windows 10.</td>
             </tr>
+            <tr>
+                <td>Memory</td>
+                <td>32GB</td>
+            </tr>
         </tbody>
     </table>
     <h2>V8FunctionCallback.receiveCallback() Performance</h2>
-    <ul>
-        <li>There is a major performance improvement in v2.2.0.</li>
-    </ul>
     <div id="V8FunctionCallbackReceiveCallbackWith20Arguments" class="chart"></div>
     <div id="V8FunctionCallbackReceiveCallbackWithoutArguments" class="chart"></div>
     <h2>V8ValueArray.forEach() Performance</h2>
-    <div id="V8ValueArrayForEachUniConsumer" class="chart"></div>
-    <div id="V8ValueArrayForEachUniIndexedConsumer" class="chart"></div>
+    <div id="V8ValueArrayForEachWithUniConsumer" class="chart"></div>
+    <div id="V8ValueArrayForEachWithUniIndexedConsumer" class="chart"></div>
     <h2>V8ValueFunction.call() Performance</h2>
     <div id="V8ValueFunctionCallWith20Arguments" class="chart"></div>
     <div id="V8ValueFunctionCallWithoutArguments" class="chart"></div>
+    <h2>V8ValueObject.forEach() Performance</h2>
+    <div id="V8ValueObjectForEachUniConsumer" class="chart"></div>
     <script>
         const options = { renderer: 'svg' };
         const getChart = (id) => echarts.init(document.getElementById(id), null, options);
-        const grid = { left: '3%', right: '100px', bottom: '3%', containLabel: true };
+        const grid = { left: '3%', right: '3%', bottom: '3%', containLabel: true };
         const label = { normal: { show: true, position: 'top' } };
-        const xAxis = { type: 'category', data: ['v2.1.2', 'v2.2.0'], name: 'Version' };
+        const xAxis = {
+            type: 'category',
+            data: [
+                'v2.1.2 V8', 'v2.1.2 Node',
+                'v2.2.0 V8', 'v2.2.0 Node',
+            ],
+        };
+        const reportMap = {};
+        reportMap['2.1.2'] = { "V8FunctionCallbackReceiveCallbackWithoutArguments": { "v8": "376789", "node": "353107" }, "V8FunctionCallbackReceiveCallbackWith20Arguments": { "v8": "40241", "node": "24915" }, "V8ValueArrayForEachWithUniIndexedConsumer": { "v8": "856", "node": "783" }, "V8ValueArrayForEachWithUniConsumer": { "v8": "849", "node": "761" }, "V8ValueFunctionCallWithoutArguments": { "v8": "1012145", "node": "926784" }, "V8ValueFunctionCallWith20Arguments": { "v8": "230282", "node": "230813" }, "V8ValueObjectForEachUniConsumer": { "v8": "610", "node": "561" } };
+        reportMap['2.2.0'] = { "V8FunctionCallbackReceiveCallbackWithoutArguments": { "v8": "347705", "node": "371195" }, "V8FunctionCallbackReceiveCallbackWith20Arguments": { "v8": "87183", "node": "92980" }, "V8ValueArrayForEachWithUniIndexedConsumer": { "v8": "4016", "node": "4081" }, "V8ValueArrayForEachWithUniConsumer": { "v8": "4000", "node": "4219" }, "V8ValueFunctionCallWithoutArguments": { "v8": "1024590", "node": "925925" }, "V8ValueFunctionCallWith20Arguments": { "v8": "237812", "node": "235988" }, "V8ValueObjectForEachUniConsumer": { "v8": "1412", "node": "1432" } };
+        const reportToData = (reportMap, name) => {
+            const data = [];
+            Object.entries(reportMap).forEach(versionedReportEntry => {
+                [version, dataMap] = versionedReportEntry;
+                Object.entries(dataMap[name]).forEach(typedReportEntry => {
+                    [type, figure] = typedReportEntry;
+                    data.push(figure);
+                });
+            });
+            return data;
+        };
         let chart = getChart('V8FunctionCallbackReceiveCallbackWith20Arguments');
         chart.setOption({
             title: { text: 'V8FunctionCallback.receiveCallback() with 20 arguments' },
@@ -69,7 +104,7 @@
             xAxis: xAxis,
             yAxis: { type: 'value', name: 'Calls per second' },
             series: [{
-                data: [40000, 89000],
+                data: reportToData(reportMap, 'V8FunctionCallbackReceiveCallbackWith20Arguments'),
                 type: 'bar',
                 label: label,
             }]
@@ -81,31 +116,31 @@
             xAxis: xAxis,
             yAxis: { type: 'value', name: 'Calls per second' },
             series: [{
-                data: [350000, 370000],
+                data: reportToData(reportMap, 'V8FunctionCallbackReceiveCallbackWithoutArguments'),
                 type: 'bar',
                 label: label,
             }]
         });
-        chart = getChart('V8ValueArrayForEachUniConsumer');
+        chart = getChart('V8ValueArrayForEachWithUniConsumer');
         chart.setOption({
             title: { text: 'V8ValueArray.forEach(UniConsumer)' },
             grid: grid,
             xAxis: xAxis,
             yAxis: { type: 'value', name: 'Calls per second' },
             series: [{
-                data: [850, 3800],
+                data: reportToData(reportMap, 'V8ValueArrayForEachWithUniConsumer'),
                 type: 'bar',
                 label: label,
             }]
         });
-        chart = getChart('V8ValueArrayForEachUniIndexedConsumer');
+        chart = getChart('V8ValueArrayForEachWithUniIndexedConsumer');
         chart.setOption({
             title: { text: 'V8ValueArray.forEach(UniIndexedConsumer)' },
             grid: grid,
             xAxis: xAxis,
             yAxis: { type: 'value', name: 'Calls per second' },
             series: [{
-                data: [850, 3800],
+                data: reportToData(reportMap, 'V8ValueArrayForEachWithUniIndexedConsumer'),
                 type: 'bar',
                 label: label,
             }]
@@ -117,7 +152,7 @@
             xAxis: xAxis,
             yAxis: { type: 'value', name: 'Calls per second' },
             series: [{
-                data: [238000, 238000],
+                data: reportToData(reportMap, 'V8ValueFunctionCallWith20Arguments'),
                 type: 'bar',
                 label: label,
             }]
@@ -129,7 +164,19 @@
             xAxis: xAxis,
             yAxis: { type: 'value', name: 'Calls per second' },
             series: [{
-                data: [970000, 1020000],
+                data: reportToData(reportMap, 'V8ValueFunctionCallWithoutArguments'),
+                type: 'bar',
+                label: label,
+            }]
+        });
+        chart = getChart('V8ValueObjectForEachUniConsumer');
+        chart.setOption({
+            title: { text: 'V8ValueObject.forEach(UniConsumer)' },
+            grid: grid,
+            xAxis: xAxis,
+            yAxis: { type: 'value', name: 'Calls per second' },
+            series: [{
+                data: reportToData(reportMap, 'V8ValueObjectForEachUniConsumer'),
                 type: 'bar',
                 label: label,
             }]

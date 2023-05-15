@@ -24,6 +24,7 @@ import com.caoccao.javet.interop.options.V8Flags;
 import com.caoccao.javet.interop.options.V8RuntimeOptions;
 import org.apache.commons.lang3.time.StopWatch;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class BaseTestJavet {
-    protected static boolean javetVersionLogged = false;
     protected Logger logger;
     protected V8Runtime nodeRuntime;
     protected List<V8Runtime> runtimes;
@@ -53,6 +53,11 @@ public abstract class BaseTestJavet {
                 v8Flags.setTrackRetainingPath(true);
             }
         }
+    }
+
+    @BeforeAll
+    protected static void beforeAll() {
+        LoggerFactory.getLogger("Version").info("Javet version is {}.", JavetLibLoader.LIB_VERSION);
     }
 
     @AfterEach
@@ -75,10 +80,6 @@ public abstract class BaseTestJavet {
 
     @BeforeEach
     protected void beforeEach() throws Exception {
-        if (!javetVersionLogged) {
-            logger.info("Javet version is {}.", JavetLibLoader.LIB_VERSION);
-            javetVersionLogged = true;
-        }
         nodeRuntime = V8Host.getNodeInstance().createV8Runtime();
         v8Runtime = V8Host.getV8Instance().createV8Runtime();
         runtimes = List.of(v8Runtime, nodeRuntime);

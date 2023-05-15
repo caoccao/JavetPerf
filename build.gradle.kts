@@ -43,7 +43,7 @@ plugins {
     id("java")
 }
 
-group = "com.caoccao.javet"
+group = "com.caoccao.javet.perf"
 version = "0.1.0"
 
 repositories {

@@ -48,7 +48,7 @@ public class TestV8ValueFunction extends BaseTestJavet {
                 assertEquals(argumentCount * loopCount, count, "Count should match.");
                 final long tps = loopCount * 1000L / stopWatch.getTime();
                 logger.info(
-                        "[{}] TestV8Function.testCallWith20Arguments(): {} calls in {}ms. TPS is {}.",
+                        "[{}] V8ValueFunctionCallWith20Arguments: {} calls in {}ms. TPS is {}.",
                         StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), loopCount, stopWatch.getTime(), tps);
             } catch (Throwable t) {
                 fail(t);
@@ -73,7 +73,7 @@ public class TestV8ValueFunction extends BaseTestJavet {
                 assertEquals(loopCount, count, "Count should match.");
                 final long tps = loopCount * 1000L / stopWatch.getTime();
                 logger.info(
-                        "[{}] TestV8Function.testCallWithoutArguments(): {} calls in {}ms. TPS is {}.",
+                        "[{}] V8ValueFunctionCallWithoutArguments: {} calls in {}ms. TPS is {}.",
                         StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), loopCount, stopWatch.getTime(), tps);
             } catch (Throwable t) {
                 fail(t);
