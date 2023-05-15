@@ -16,6 +16,8 @@
 
 package com.caoccao.javet.perf;
 
+import com.caoccao.javet.interfaces.IJavetUniIndexedConsumer;
+import com.caoccao.javet.values.V8Value;
 import com.caoccao.javet.values.primitive.V8ValueString;
 import com.caoccao.javet.values.reference.V8ValueObject;
 import org.apache.commons.lang3.StringUtils;
@@ -46,7 +48,36 @@ public class TestV8ValueObject extends BaseTestJavet {
                 assertEquals(keyLength * (keyLength - 1) / 2L * loopCount, longAdder.longValue(), "Count should match.");
                 final long tps = loopCount * 1000L / stopWatch.getTime();
                 logger.info(
-                        "[{}] V8ValueObjectForEachUniConsumer: {} calls in {}ms. TPS is {}.",
+                        "[{}] V8ValueObjectForEachWithUniConsumer: {} calls in {}ms. TPS is {}.",
+                        StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), loopCount, stopWatch.getTime(), tps);
+            } catch (Throwable t) {
+                fail(t);
+            }
+        });
+    }
+
+    @Test
+    public void testForEachWithUniIndexedConsumer() {
+        final int keyLength = 1000;
+        final long loopCount = 1000L;
+        runtimes.forEach(runtime -> {
+            try (V8ValueObject v8ValueObject = runtime.getExecutor(
+                    "const a = {};" +
+                            "Array.from({ length: " + keyLength + " }, (_, i) => { a[' ' + i] = i; return i; });" +
+                            "a;").execute()) {
+                LongAdder longAdder = new LongAdder();
+                stopWatch.reset();
+                stopWatch.start();
+                for (long i = 0; i < loopCount; i++) {
+                    v8ValueObject.forEach(
+                            (IJavetUniIndexedConsumer<V8Value, Throwable>) (index, key) ->
+                                    longAdder.add(Integer.parseInt(((V8ValueString) key).getValue().substring(1))));
+                }
+                stopWatch.stop();
+                assertEquals(keyLength * (keyLength - 1) / 2L * loopCount, longAdder.longValue(), "Count should match.");
+                final long tps = loopCount * 1000L / stopWatch.getTime();
+                logger.info(
+                        "[{}] V8ValueObjectForEachWithUniIndexedConsumer: {} calls in {}ms. TPS is {}.",
                         StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), loopCount, stopWatch.getTime(), tps);
             } catch (Throwable t) {
                 fail(t);
