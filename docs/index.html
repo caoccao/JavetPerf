@@ -72,6 +72,8 @@
     <h2>V8ValueObject.forEach() Performance</h2>
     <div id="V8ValueObjectForEachWithUniConsumer" class="chart"></div>
     <div id="V8ValueObjectForEachWithUniIndexedConsumer" class="chart"></div>
+    <div id="V8ValueObjectForEachWithBiConsumer" class="chart"></div>
+    <div id="V8ValueObjectForEachWithBiIndexedConsumer" class="chart"></div>
     <script>
         const options = { renderer: 'svg' };
         const getChart = (id) => echarts.init(document.getElementById(id), null, options);
@@ -85,8 +87,8 @@
             ],
         };
         const reportMap = {};
-        reportMap['2.1.2'] = {"V8FunctionCallbackReceiveCallbackWithoutArguments":{"v8":"342231","node":"381679"},"V8FunctionCallbackReceiveCallbackWith20Arguments":{"v8":"40016","node":"40152"},"V8ValueArrayForEachWithUniIndexedConsumer":{"v8":"846","node":"825"},"V8ValueArrayForEachWithUniConsumer":{"v8":"726","node":"830"},"V8ValueFunctionCallWithoutArguments":{"v8":"992063","node":"962463"},"V8ValueFunctionCallWith20Arguments":{"v8":"240096","node":"232018"},"V8ValueObjectForEachWithUniIndexedConsumer":{"v8":"614","node":"603"},"V8ValueObjectForEachWithUniConsumer":{"v8":"585","node":"580"}};
-        reportMap['2.2.0'] = {"V8FunctionCallbackReceiveCallbackWithoutArguments":{"v8":"353356","node":"370644"},"V8FunctionCallbackReceiveCallbackWith20Arguments":{"v8":"85800","node":"88300"},"V8ValueArrayForEachWithUniIndexedConsumer":{"v8":"3906","node":"3906"},"V8ValueArrayForEachWithUniConsumer":{"v8":"3937","node":"3937"},"V8ValueFunctionCallWithoutArguments":{"v8":"1028806","node":"944287"},"V8ValueFunctionCallWith20Arguments":{"v8":"225861","node":"235432"},"V8ValueObjectForEachWithUniIndexedConsumer":{"v8":"1383","node":"1492"},"V8ValueObjectForEachWithUniConsumer":{"v8":"1459","node":"1533"}};
+        reportMap['2.1.2'] = {"V8FunctionCallbackReceiveCallbackWithoutArguments":{"v8":"330469","node":"372578"},"V8FunctionCallbackReceiveCallbackWith20Arguments":{"v8":"39984","node":"40485"},"V8ValueArrayForEachWithUniIndexedConsumer":{"v8":"853","node":"823"},"V8ValueArrayForEachWithUniConsumer":{"v8":"839","node":"812"},"V8ValueFunctionCallWithoutArguments":{"v8":"989119","node":"952380"},"V8ValueFunctionCallWith20Arguments":{"v8":"241254","node":"236686"},"V8ValueObjectForEachWithUniIndexedConsumer":{"v8":"621","node":"595"},"V8ValueObjectForEachWithBiConsumer":{"v8":"306","node":"299"},"V8ValueObjectForEachWithUniConsumer":{"v8":"624","node":"598"},"V8ValueObjectForEachWithBiIndexedConsumer":{"v8":"311","node":"241"}};
+        reportMap['2.2.0'] = {"V8FunctionCallbackReceiveCallbackWithoutArguments":{"v8":"370370","node":"380517"},"V8FunctionCallbackReceiveCallbackWith20Arguments":{"v8":"89206","node":"88066"},"V8ValueArrayForEachWithUniIndexedConsumer":{"v8":"3846","node":"3937"},"V8ValueArrayForEachWithUniConsumer":{"v8":"3952","node":"3984"},"V8ValueFunctionCallWithoutArguments":{"v8":"1021450","node":"955109"},"V8ValueFunctionCallWith20Arguments":{"v8":"241254","node":"235849"},"V8ValueObjectForEachWithUniIndexedConsumer":{"v8":"1485","node":"1488"},"V8ValueObjectForEachWithBiConsumer":{"v8":"688","node":"686"},"V8ValueObjectForEachWithUniConsumer":{"v8":"1497","node":"1533"},"V8ValueObjectForEachWithBiIndexedConsumer":{"v8":"660","node":"729"}};
         const reportToData = (reportMap, name) => {
             const data = [];
             Object.entries(reportMap).forEach(versionedReportEntry => {
@@ -190,6 +192,30 @@
             yAxis: { type: 'value', name: 'Calls per second' },
             series: [{
                 data: reportToData(reportMap, 'V8ValueObjectForEachWithUniIndexedConsumer'),
+                type: 'bar',
+                label: label,
+            }]
+        });
+        chart = getChart('V8ValueObjectForEachWithBiConsumer');
+        chart.setOption({
+            title: { text: 'V8ValueObject.forEach() with BiConsumer' },
+            grid: grid,
+            xAxis: xAxis,
+            yAxis: { type: 'value', name: 'Calls per second' },
+            series: [{
+                data: reportToData(reportMap, 'V8ValueObjectForEachWithBiConsumer'),
+                type: 'bar',
+                label: label,
+            }]
+        });
+        chart = getChart('V8ValueObjectForEachWithBiIndexedConsumer');
+        chart.setOption({
+            title: { text: 'V8ValueObject.forEach() with BiIndexedConsumer' },
+            grid: grid,
+            xAxis: xAxis,
+            yAxis: { type: 'value', name: 'Calls per second' },
+            series: [{
+                data: reportToData(reportMap, 'V8ValueObjectForEachWithBiIndexedConsumer'),
                 type: 'bar',
                 label: label,
             }]

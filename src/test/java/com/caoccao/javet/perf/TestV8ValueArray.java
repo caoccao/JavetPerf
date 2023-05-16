@@ -16,8 +16,6 @@
 
 package com.caoccao.javet.perf;
 
-import com.caoccao.javet.interfaces.IJavetUniIndexedConsumer;
-import com.caoccao.javet.values.V8Value;
 import com.caoccao.javet.values.primitive.V8ValueInteger;
 import com.caoccao.javet.values.reference.V8ValueArray;
 import org.apache.commons.lang3.StringUtils;
@@ -40,7 +38,7 @@ public class TestV8ValueArray extends BaseTestJavet {
                 stopWatch.reset();
                 stopWatch.start();
                 for (long i = 0; i < loopCount; i++) {
-                    v8ValueArray.forEach(v8Value -> longAdder.add(((V8ValueInteger) v8Value).getValue()));
+                    v8ValueArray.forEach((V8ValueInteger v8Value) -> longAdder.add(v8Value.getValue()));
                 }
                 stopWatch.stop();
                 assertEquals(arrayLength * (arrayLength - 1) / 2L * loopCount, longAdder.longValue(), "Count should match.");
@@ -65,9 +63,7 @@ public class TestV8ValueArray extends BaseTestJavet {
                 stopWatch.reset();
                 stopWatch.start();
                 for (long i = 0; i < loopCount; i++) {
-                    v8ValueArray.forEach(
-                            (IJavetUniIndexedConsumer<V8Value, Throwable>) (index, value) ->
-                                    longAdder.add(((V8ValueInteger) value).getValue()));
+                    v8ValueArray.forEach((int index, V8ValueInteger value) -> longAdder.add(value.getValue()));
                 }
                 stopWatch.stop();
                 assertEquals(arrayLength * (arrayLength - 1) / 2L * loopCount, longAdder.longValue(), "Count should match.");
