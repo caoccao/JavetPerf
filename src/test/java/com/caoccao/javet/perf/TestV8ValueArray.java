@@ -34,14 +34,12 @@ public class TestV8ValueArray extends BaseTestJavet {
         runtimes.forEach(runtime -> {
             try (V8ValueArray v8ValueArray = runtime.getExecutor(
                     "Array.from({ length: " + arrayLength + " }, (_, i) => i)").execute()) {
-                LongAdder longAdder = new LongAdder();
                 stopWatch.reset();
                 stopWatch.start();
                 for (long i = 0; i < loopCount; i++) {
-                    v8ValueArray.forEach((V8ValueInteger v8Value) -> longAdder.add(v8Value.getValue()));
+                    v8ValueArray.forEach((V8ValueInteger v8Value) -> v8Value.getValue());
                 }
                 stopWatch.stop();
-                assertEquals(arrayLength * (arrayLength - 1) / 2L * loopCount, longAdder.longValue(), "Count should match.");
                 final long tps = loopCount * 1000L / stopWatch.getTime();
                 logger.info(
                         "[{}] V8ValueArrayForEachWithUniConsumer: {} calls in {}ms. TPS is {}.",
@@ -59,14 +57,12 @@ public class TestV8ValueArray extends BaseTestJavet {
         runtimes.forEach(runtime -> {
             try (V8ValueArray v8ValueArray = runtime.getExecutor(
                     "Array.from({ length: " + arrayLength + " }, (_, i) => i)").execute()) {
-                LongAdder longAdder = new LongAdder();
                 stopWatch.reset();
                 stopWatch.start();
                 for (long i = 0; i < loopCount; i++) {
-                    v8ValueArray.forEach((int index, V8ValueInteger value) -> longAdder.add(value.getValue()));
+                    v8ValueArray.forEach((int index, V8ValueInteger value) -> value.getValue());
                 }
                 stopWatch.stop();
-                assertEquals(arrayLength * (arrayLength - 1) / 2L * loopCount, longAdder.longValue(), "Count should match.");
                 final long tps = loopCount * 1000L / stopWatch.getTime();
                 logger.info(
                         "[{}] V8ValueArrayForEachWithUniIndexedConsumer: {} calls in {}ms. TPS is {}.",

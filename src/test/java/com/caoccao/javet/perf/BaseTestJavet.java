@@ -58,6 +58,7 @@ public abstract class BaseTestJavet {
     @BeforeAll
     protected static void beforeAll() {
         LoggerFactory.getLogger("Version").info("Javet version is {}.", JavetLibLoader.LIB_VERSION);
+        System.gc();
     }
 
     @AfterEach
@@ -76,6 +77,7 @@ public abstract class BaseTestJavet {
         v8Runtime.close();
         assertEquals(0, V8Host.getNodeInstance().getV8RuntimeCount());
         assertEquals(0, V8Host.getV8Instance().getV8RuntimeCount());
+        System.gc();
     }
 
     @BeforeEach

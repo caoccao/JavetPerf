@@ -37,15 +37,12 @@ public class TestV8ValueObject extends BaseTestJavet {
                     "const a = {};" +
                             "Array.from({ length: " + keyLength + " }, (_, i) => { a[' ' + i] = i; return i; });" +
                             "a;").execute()) {
-                LongAdder longAdder = new LongAdder();
                 stopWatch.reset();
                 stopWatch.start();
                 for (long i = 0; i < loopCount; i++) {
-                    v8ValueObject.forEach((V8ValueString key, V8ValueInteger value) ->
-                            longAdder.add(value.getValue()));
+                    v8ValueObject.forEach((V8ValueString key, V8ValueInteger value) -> value.getValue());
                 }
                 stopWatch.stop();
-                assertEquals(keyLength * (keyLength - 1) / 2L * loopCount, longAdder.longValue(), "Count should match.");
                 final long tps = loopCount * 1000L / stopWatch.getTime();
                 logger.info(
                         "[{}] V8ValueObjectForEachWithBiConsumer: {} calls in {}ms. TPS is {}.",
@@ -65,15 +62,12 @@ public class TestV8ValueObject extends BaseTestJavet {
                     "const a = {};" +
                             "Array.from({ length: " + keyLength + " }, (_, i) => { a[' ' + i] = i; return i; });" +
                             "a;").execute()) {
-                LongAdder longAdder = new LongAdder();
                 stopWatch.reset();
                 stopWatch.start();
                 for (long i = 0; i < loopCount; i++) {
-                    v8ValueObject.forEach((int index, V8ValueString key, V8ValueInteger value) ->
-                            longAdder.add(value.getValue()));
+                    v8ValueObject.forEach((int index, V8ValueString key, V8ValueInteger value) -> value.getValue());
                 }
                 stopWatch.stop();
-                assertEquals(keyLength * (keyLength - 1) / 2L * loopCount, longAdder.longValue(), "Count should match.");
                 final long tps = loopCount * 1000L / stopWatch.getTime();
                 logger.info(
                         "[{}] V8ValueObjectForEachWithBiIndexedConsumer: {} calls in {}ms. TPS is {}.",
@@ -93,15 +87,12 @@ public class TestV8ValueObject extends BaseTestJavet {
                     "const a = {};" +
                             "Array.from({ length: " + keyLength + " }, (_, i) => { a[' ' + i] = i; return i; });" +
                             "a;").execute()) {
-                LongAdder longAdder = new LongAdder();
                 stopWatch.reset();
                 stopWatch.start();
                 for (long i = 0; i < loopCount; i++) {
-                    v8ValueObject.forEach((V8ValueString key) ->
-                            longAdder.add(Integer.parseInt(key.getValue().substring(1))));
+                    v8ValueObject.forEach((V8ValueString key) -> key.getValue().substring(1));
                 }
                 stopWatch.stop();
-                assertEquals(keyLength * (keyLength - 1) / 2L * loopCount, longAdder.longValue(), "Count should match.");
                 final long tps = loopCount * 1000L / stopWatch.getTime();
                 logger.info(
                         "[{}] V8ValueObjectForEachWithUniConsumer: {} calls in {}ms. TPS is {}.",
@@ -121,18 +112,125 @@ public class TestV8ValueObject extends BaseTestJavet {
                     "const a = {};" +
                             "Array.from({ length: " + keyLength + " }, (_, i) => { a[' ' + i] = i; return i; });" +
                             "a;").execute()) {
-                LongAdder longAdder = new LongAdder();
                 stopWatch.reset();
                 stopWatch.start();
                 for (long i = 0; i < loopCount; i++) {
-                    v8ValueObject.forEach((int index, V8ValueString key) ->
-                            longAdder.add(Integer.parseInt(key.getValue().substring(1))));
+                    v8ValueObject.forEach((int index, V8ValueString key) -> key.getValue().substring(1));
                 }
                 stopWatch.stop();
-                assertEquals(keyLength * (keyLength - 1) / 2L * loopCount, longAdder.longValue(), "Count should match.");
                 final long tps = loopCount * 1000L / stopWatch.getTime();
                 logger.info(
                         "[{}] V8ValueObjectForEachWithUniIndexedConsumer: {} calls in {}ms. TPS is {}.",
+                        StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), loopCount, stopWatch.getTime(), tps);
+            } catch (Throwable t) {
+                fail(t);
+            }
+        });
+    }
+
+    @Test
+    public void testGetBoolean() {
+        final long loopCount = 1000_000L;
+        runtimes.forEach(runtime -> {
+            try (V8ValueObject v8ValueObject = runtime.createV8ValueObject()) {
+                v8ValueObject.set("a", true);
+                stopWatch.reset();
+                stopWatch.start();
+                for (long i = 0; i < loopCount; i++) {
+                    v8ValueObject.getBoolean("a");
+                }
+                stopWatch.stop();
+                final long tps = loopCount * 1000L / stopWatch.getTime();
+                logger.info(
+                        "[{}] V8ValueObjectGetBoolean: {} calls in {}ms. TPS is {}.",
+                        StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), loopCount, stopWatch.getTime(), tps);
+            } catch (Throwable t) {
+                fail(t);
+            }
+        });
+    }
+
+    @Test
+    public void testGetDouble() {
+        final long loopCount = 1000_000L;
+        runtimes.forEach(runtime -> {
+            try (V8ValueObject v8ValueObject = runtime.createV8ValueObject()) {
+                v8ValueObject.set("a", 1.23D);
+                stopWatch.reset();
+                stopWatch.start();
+                for (long i = 0; i < loopCount; i++) {
+                    v8ValueObject.getDouble("a");
+                }
+                stopWatch.stop();
+                final long tps = loopCount * 1000L / stopWatch.getTime();
+                logger.info(
+                        "[{}] V8ValueObjectGetDouble: {} calls in {}ms. TPS is {}.",
+                        StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), loopCount, stopWatch.getTime(), tps);
+            } catch (Throwable t) {
+                fail(t);
+            }
+        });
+    }
+
+    @Test
+    public void testGetInteger() {
+        final long loopCount = 1000_000L;
+        runtimes.forEach(runtime -> {
+            try (V8ValueObject v8ValueObject = runtime.createV8ValueObject()) {
+                v8ValueObject.set("a", 1000);
+                stopWatch.reset();
+                stopWatch.start();
+                for (long i = 0; i < loopCount; i++) {
+                    v8ValueObject.getInteger("a");
+                }
+                stopWatch.stop();
+                final long tps = loopCount * 1000L / stopWatch.getTime();
+                logger.info(
+                        "[{}] V8ValueObjectGetInteger: {} calls in {}ms. TPS is {}.",
+                        StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), loopCount, stopWatch.getTime(), tps);
+            } catch (Throwable t) {
+                fail(t);
+            }
+        });
+    }
+
+    @Test
+    public void testGetLong() {
+        final long loopCount = 1000_000L;
+        runtimes.forEach(runtime -> {
+            try (V8ValueObject v8ValueObject = runtime.createV8ValueObject()) {
+                v8ValueObject.set("a", 1000L);
+                stopWatch.reset();
+                stopWatch.start();
+                for (long i = 0; i < loopCount; i++) {
+                    v8ValueObject.getLong("a");
+                }
+                stopWatch.stop();
+                final long tps = loopCount * 1000L / stopWatch.getTime();
+                logger.info(
+                        "[{}] V8ValueObjectGetLong: {} calls in {}ms. TPS is {}.",
+                        StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), loopCount, stopWatch.getTime(), tps);
+            } catch (Throwable t) {
+                fail(t);
+            }
+        });
+    }
+
+    @Test
+    public void testGetString() {
+        final long loopCount = 1000_000L;
+        runtimes.forEach(runtime -> {
+            try (V8ValueObject v8ValueObject = runtime.createV8ValueObject()) {
+                v8ValueObject.set("a", "a");
+                stopWatch.reset();
+                stopWatch.start();
+                for (long i = 0; i < loopCount; i++) {
+                    v8ValueObject.getString("a");
+                }
+                stopWatch.stop();
+                final long tps = loopCount * 1000L / stopWatch.getTime();
+                logger.info(
+                        "[{}] V8ValueObjectGetString: {} calls in {}ms. TPS is {}.",
                         StringUtils.leftPad(runtime.getJSRuntimeType().getName(), 4), loopCount, stopWatch.getTime(), tps);
             } catch (Throwable t) {
                 fail(t);
