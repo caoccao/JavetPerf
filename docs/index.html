@@ -99,16 +99,9 @@
         const getChart = (id) => echarts.init(document.getElementById(id), null, options);
         const grid = { left: '3%', right: '3%', bottom: '3%', containLabel: true };
         const label = { normal: { show: true, position: 'top' } };
-        const xAxis = {
-            type: 'category',
-            data: [
-                'v2.1.2 V8', 'v2.1.2 Node',
-                'v2.2.0 V8', 'v2.2.0 Node',
-            ],
-        };
         const reportMap = {};
         reportMap['2.1.2'] = {"V8FunctionCallbackReceiveCallbackWithoutArguments":{"v8":"372300","node":"388500"},"V8FunctionCallbackReceiveCallbackWith20Arguments":{"v8":"28818","node":"40298"},"V8ValueArrayForEachWithUniIndexedConsumer":{"v8":"870","node":"798"},"V8ValueArrayForEachWithUniConsumer":{"v8":"846","node":"841"},"V8ValueFunctionCallWithoutArguments":{"v8":"1038421","node":"994035"},"V8ValueFunctionCallWith20Arguments":{"v8":"237529","node":"236266"},"V8ValueMapGetInteger":{"v8":"741839","node":"711743"},"V8ValueMapGetLong":{"v8":"729927","node":"647668"},"V8ValueMapGetBoolean":{"v8":"769230","node":"704721"},"V8ValueMapGetDouble":{"v8":"739098","node":"689179"},"V8ValueMapGetString":{"v8":"615384","node":"577367"},"V8ValueObjectGetInteger":{"v8":"781250","node":"739098"},"V8ValueObjectForEachWithUniIndexedConsumer":{"v8":"608","node":"560"},"V8ValueObjectForEachWithBiConsumer":{"v8":"301","node":"302"},"V8ValueObjectGetLong":{"v8":"735294","node":"696864"},"V8ValueObjectGetBoolean":{"v8":"761035","node":"726744"},"V8ValueObjectGetDouble":{"v8":"719424","node":"708717"},"V8ValueObjectGetString":{"v8":"604229","node":"599880"},"V8ValueObjectForEachWithUniConsumer":{"v8":"625","node":"595"},"V8ValueObjectForEachWithBiIndexedConsumer":{"v8":"307","node":"304"}};
-        reportMap['2.2.0'] = {"V8FunctionCallbackReceiveCallbackWithoutArguments":{"v8":"365764","node":"378787"},"V8FunctionCallbackReceiveCallbackWith20Arguments":{"v8":"90211","node":"89047"},"V8ValueArrayForEachWithUniIndexedConsumer":{"v8":"3984","node":"4166"},"V8ValueArrayForEachWithUniConsumer":{"v8":"4219","node":"4000"},"V8ValueFunctionCallWithoutArguments":{"v8":"990099","node":"956937"},"V8ValueFunctionCallWith20Arguments":{"v8":"234192","node":"232828"},"V8ValueMapGetInteger":{"v8":"893655","node":"868055"},"V8ValueMapGetLong":{"v8":"901713","node":"862068"},"V8ValueMapGetBoolean":{"v8":"904977","node":"884173"},"V8ValueMapGetDouble":{"v8":"915750","node":"841042"},"V8ValueMapGetString":{"v8":"720461","node":"699790"},"V8ValueObjectGetInteger":{"v8":"889679","node":"893655"},"V8ValueObjectForEachWithUniIndexedConsumer":{"v8":"1464","node":"1499"},"V8ValueObjectForEachWithBiConsumer":{"v8":"686","node":"718"},"V8ValueObjectGetLong":{"v8":"753579","node":"758725"},"V8ValueObjectGetBoolean":{"v8":"900090","node":"887311"},"V8ValueObjectGetDouble":{"v8":"865800","node":"872600"},"V8ValueObjectGetString":{"v8":"727272","node":"741839"},"V8ValueObjectForEachWithUniConsumer":{"v8":"1477","node":"1424"},"V8ValueObjectForEachWithBiIndexedConsumer":{"v8":"696","node":"717"}};
+        reportMap['2.2.0'] = {"V8FunctionCallbackReceiveCallbackWithoutArguments":{"v8":"347705","node":"349895"},"V8FunctionCallbackReceiveCallbackWith20Arguments":{"v8":"78833","node":"82372"},"V8ValueArrayForEachWithUniIndexedConsumer":{"v8":"3610","node":"3921"},"V8ValueArrayForEachWithUniConsumer":{"v8":"3571","node":"3759"},"V8ValueFunctionCallWithoutArguments":{"v8":"1015228","node":"968054"},"V8ValueFunctionCallWith20Arguments":{"v8":"204603","node":"208768"},"V8ValueMapGetInteger":{"v8":"820344","node":"801282"},"V8ValueMapGetLong":{"v8":"871839","node":"821692"},"V8ValueMapGetBoolean":{"v8":"853242","node":"801282"},"V8ValueMapGetDouble":{"v8":"780640","node":"836120"},"V8ValueMapGetString":{"v8":"706214","node":"684462"},"V8ValueObjectGetInteger":{"v8":"865051","node":"840336"},"V8ValueObjectForEachWithUniIndexedConsumer":{"v8":"1390","node":"1468"},"V8ValueObjectForEachWithBiConsumer":{"v8":"656","node":"676"},"V8ValueObjectGetLong":{"v8":"849617","node":"838222"},"V8ValueObjectGetBoolean":{"v8":"843170","node":"868809"},"V8ValueObjectGetDouble":{"v8":"814332","node":"809061"},"V8ValueObjectGetString":{"v8":"692520","node":"685400"},"V8ValueObjectForEachWithUniConsumer":{"v8":"1386","node":"1440"},"V8ValueObjectForEachWithBiIndexedConsumer":{"v8":"649","node":"680"}};
         const reportToData = (reportMap, name) => {
             const data = [];
             Object.entries(reportMap).forEach(versionedReportEntry => {
@@ -119,6 +112,17 @@
                 });
             });
             return data;
+        };
+        const reportToXAxis = (reportMap) => {
+            const data = [];
+            Object.getOwnPropertyNames(reportMap).forEach(name => {
+                data.push(`v${name} V8`, `v${name} Node`);
+            });
+            return data;
+        };
+        const xAxis = {
+            type: 'category',
+            data: reportToXAxis(reportMap),
         };
         let chart = getChart('V8FunctionCallbackReceiveCallbackWith20Arguments');
         chart.setOption({

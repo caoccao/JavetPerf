@@ -33,7 +33,7 @@ object Config {
     object Versions {
         const val COMMONS_COLLECTIONS_4 = "4.4"
         const val COMMONS_LANG_3 = "3.12.0"
-        const val JAVET = "2.1.2"
+        const val JAVET = "2.2.0"
         const val JUNIT = "5.9.1"
         const val SELF4J = "2.0.7"
     }
