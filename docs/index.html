@@ -43,20 +43,24 @@
         <li><code>forEach()</code> in <code>Array</code>, <code>Object</code> is rewritten.</li>
         <li><code>receiveCallback()</code> is refactored.</li>
     </ul>
+    <p style="font-weight: bold;">Major changes in v3.0.1 are:</p>
+    <ul>
+        <li>C++ Optimization</li>
+    </ul>
     <h2>Test Environment</h2>
     <table>
         <tbody>
             <tr>
                 <td>CPU</td>
-                <td>10700K.</td>
+                <td>5950x</td>
             </tr>
             <tr>
                 <td>OS</td>
-                <td>Windows 10.</td>
+                <td>Windows 10</td>
             </tr>
             <tr>
                 <td>Memory</td>
-                <td>32GB</td>
+                <td>128GB</td>
             </tr>
         </tbody>
     </table>
@@ -100,8 +104,9 @@
         const grid = { left: '3%', right: '3%', bottom: '3%', containLabel: true };
         const label = { normal: { show: true, position: 'top' } };
         const reportMap = {};
-        reportMap['2.1.2'] = {"V8FunctionCallbackReceiveCallbackWithoutArguments":{"v8":"372300","node":"388500"},"V8FunctionCallbackReceiveCallbackWith20Arguments":{"v8":"28818","node":"40298"},"V8ValueArrayForEachWithUniIndexedConsumer":{"v8":"870","node":"798"},"V8ValueArrayForEachWithUniConsumer":{"v8":"846","node":"841"},"V8ValueFunctionCallWithoutArguments":{"v8":"1038421","node":"994035"},"V8ValueFunctionCallWith20Arguments":{"v8":"237529","node":"236266"},"V8ValueMapGetInteger":{"v8":"741839","node":"711743"},"V8ValueMapGetLong":{"v8":"729927","node":"647668"},"V8ValueMapGetBoolean":{"v8":"769230","node":"704721"},"V8ValueMapGetDouble":{"v8":"739098","node":"689179"},"V8ValueMapGetString":{"v8":"615384","node":"577367"},"V8ValueObjectGetInteger":{"v8":"781250","node":"739098"},"V8ValueObjectForEachWithUniIndexedConsumer":{"v8":"608","node":"560"},"V8ValueObjectForEachWithBiConsumer":{"v8":"301","node":"302"},"V8ValueObjectGetLong":{"v8":"735294","node":"696864"},"V8ValueObjectGetBoolean":{"v8":"761035","node":"726744"},"V8ValueObjectGetDouble":{"v8":"719424","node":"708717"},"V8ValueObjectGetString":{"v8":"604229","node":"599880"},"V8ValueObjectForEachWithUniConsumer":{"v8":"625","node":"595"},"V8ValueObjectForEachWithBiIndexedConsumer":{"v8":"307","node":"304"}};
-        reportMap['2.2.0'] = {"V8FunctionCallbackReceiveCallbackWithoutArguments":{"v8":"347705","node":"349895"},"V8FunctionCallbackReceiveCallbackWith20Arguments":{"v8":"78833","node":"82372"},"V8ValueArrayForEachWithUniIndexedConsumer":{"v8":"3610","node":"3921"},"V8ValueArrayForEachWithUniConsumer":{"v8":"3571","node":"3759"},"V8ValueFunctionCallWithoutArguments":{"v8":"1015228","node":"968054"},"V8ValueFunctionCallWith20Arguments":{"v8":"204603","node":"208768"},"V8ValueMapGetInteger":{"v8":"820344","node":"801282"},"V8ValueMapGetLong":{"v8":"871839","node":"821692"},"V8ValueMapGetBoolean":{"v8":"853242","node":"801282"},"V8ValueMapGetDouble":{"v8":"780640","node":"836120"},"V8ValueMapGetString":{"v8":"706214","node":"684462"},"V8ValueObjectGetInteger":{"v8":"865051","node":"840336"},"V8ValueObjectForEachWithUniIndexedConsumer":{"v8":"1390","node":"1468"},"V8ValueObjectForEachWithBiConsumer":{"v8":"656","node":"676"},"V8ValueObjectGetLong":{"v8":"849617","node":"838222"},"V8ValueObjectGetBoolean":{"v8":"843170","node":"868809"},"V8ValueObjectGetDouble":{"v8":"814332","node":"809061"},"V8ValueObjectGetString":{"v8":"692520","node":"685400"},"V8ValueObjectForEachWithUniConsumer":{"v8":"1386","node":"1440"},"V8ValueObjectForEachWithBiIndexedConsumer":{"v8":"649","node":"680"}};
+        reportMap['2.1.2'] = {"V8FunctionCallbackReceiveCallbackWithoutArguments":{"v8":"479846","node":"505561"},"V8FunctionCallbackReceiveCallbackWith20Arguments":{"v8":"49763","node":"40724"},"V8ValueArrayForEachWithUniIndexedConsumer":{"v8":"1042","node":"996"},"V8ValueArrayForEachWithUniConsumer":{"v8":"1039","node":"996"},"V8ValueFunctionCallWithoutArguments":{"v8":"1253132","node":"1182033"},"V8ValueFunctionCallWith20Arguments":{"v8":"285306","node":"279916"},"V8ValueMapGetInteger":{"v8":"937207","node":"881057"},"V8ValueMapGetLong":{"v8":"902527","node":"868809"},"V8ValueMapGetBoolean":{"v8":"940733","node":"875656"},"V8ValueMapGetDouble":{"v8":"889679","node":"846023"},"V8ValueMapGetString":{"v8":"733675","node":"710732"},"V8ValueObjectGetInteger":{"v8":"707714","node":"693962"},"V8ValueObjectForEachWithUniIndexedConsumer":{"v8":"719","node":"715"},"V8ValueObjectForEachWithBiConsumer":{"v8":"373","node":"367"},"V8ValueObjectGetLong":{"v8":"870322","node":"853970"},"V8ValueObjectGetBoolean":{"v8":"912408","node":"878734"},"V8ValueObjectGetDouble":{"v8":"841042","node":"801924"},"V8ValueObjectGetString":{"v8":"689655","node":"666222"},"V8ValueObjectForEachWithUniConsumer":{"v8":"687","node":"670"},"V8ValueObjectForEachWithBiIndexedConsumer":{"v8":"374","node":"367"}};
+        reportMap['2.2.0'] = {"V8FunctionCallbackReceiveCallbackWithoutArguments":{"v8":"479386","node":"504032"},"V8FunctionCallbackReceiveCallbackWith20Arguments":{"v8":"115074","node":"115340"},"V8ValueArrayForEachWithUniIndexedConsumer":{"v8":"4149","node":"4237"},"V8ValueArrayForEachWithUniConsumer":{"v8":"4329","node":"4366"},"V8ValueFunctionCallWithoutArguments":{"v8":"1197604","node":"1186239"},"V8ValueFunctionCallWith20Arguments":{"v8":"289435","node":"288808"},"V8ValueMapGetInteger":{"v8":"1101321","node":"1081081"},"V8ValueMapGetLong":{"v8":"1085776","node":"1074113"},"V8ValueMapGetBoolean":{"v8":"1090512","node":"1092896"},"V8ValueMapGetDouble":{"v8":"1090512","node":"1094091"},"V8ValueMapGetString":{"v8":"915750","node":"918273"},"V8ValueObjectGetInteger":{"v8":"1085776","node":"1102535"},"V8ValueObjectForEachWithUniIndexedConsumer":{"v8":"1623","node":"1669"},"V8ValueObjectForEachWithBiConsumer":{"v8":"758","node":"783"},"V8ValueObjectGetLong":{"v8":"1041666","node":"1052631"},"V8ValueObjectGetBoolean":{"v8":"877963","node":"874890"},"V8ValueObjectGetDouble":{"v8":"1057082","node":"1067235"},"V8ValueObjectGetString":{"v8":"914076","node":"915750"},"V8ValueObjectForEachWithUniConsumer":{"v8":"1592","node":"1584"},"V8ValueObjectForEachWithBiIndexedConsumer":{"v8":"757","node":"774"}};
+        reportMap['3.0.1'] = {"V8FunctionCallbackReceiveCallbackWithoutArguments":{"v8":"490677","node":"497512"},"V8FunctionCallbackReceiveCallbackWith20Arguments":{"v8":"117233","node":"116414"},"V8ValueArrayForEachWithUniIndexedConsumer":{"v8":"4545","node":"4672"},"V8ValueArrayForEachWithUniConsumer":{"v8":"4566","node":"4739"},"V8ValueFunctionCallWithoutArguments":{"v8":"1206272","node":"1250000"},"V8ValueFunctionCallWith20Arguments":{"v8":"290275","node":"294334"},"V8ValueMapGetInteger":{"v8":"1083423","node":"1089324"},"V8ValueMapGetLong":{"v8":"1111111","node":"1127395"},"V8ValueMapGetBoolean":{"v8":"871080","node":"1140250"},"V8ValueMapGetDouble":{"v8":"1069518","node":"1081081"},"V8ValueMapGetString":{"v8":"919963","node":"910746"},"V8ValueObjectGetInteger":{"v8":"1052631","node":"1049317"},"V8ValueObjectForEachWithUniIndexedConsumer":{"v8":"1692","node":"1721"},"V8ValueObjectForEachWithBiConsumer":{"v8":"777","node":"772"},"V8ValueObjectGetLong":{"v8":"1069518","node":"1098901"},"V8ValueObjectGetBoolean":{"v8":"904977","node":"891265"},"V8ValueObjectGetDouble":{"v8":"1070663","node":"1076426"},"V8ValueObjectGetString":{"v8":"916590","node":"909090"},"V8ValueObjectForEachWithUniConsumer":{"v8":"1694","node":"1736"},"V8ValueObjectForEachWithBiIndexedConsumer":{"v8":"754","node":"762"}};
         const reportToData = (reportMap, name) => {
             const data = [];
             Object.entries(reportMap).forEach(versionedReportEntry => {
